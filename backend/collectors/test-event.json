@@ -1,0 +1,8 @@
+{
+  "httpMethod": "GET",
+  "path": "/usage",
+  "queryStringParameters": null,
+  "headers": {
+    "User-Agent": "test-client"
+  }
+}
