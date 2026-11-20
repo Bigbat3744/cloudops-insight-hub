@@ -1,3 +1,4 @@
+import os
 import json
 import logging
 import boto3
@@ -11,8 +12,8 @@ logger.setLevel(logging.INFO)
 
 # Initialize AWS clients (reused across warm starts)
 ce_client = boto3.client("ce", region_name="us-east-1")
-dynamodb = boto3.resource("dynamodb", region_name="us-east-1")
-table = dynamodb.Table("cloudops-usage")
+dynamodb = boto3.resource("dynamodb")
+table = dynamodb.Table(os.environ["TABLE_NAME"])
 
 
 def lambda_handler(event, context) -> Dict[str, Any]:
@@ -197,7 +198,7 @@ def store_cost_data(cost_data: Dict[str, Any]) -> Dict[str, Any]:
         return {
             "status": "success",
             "items_written": items_written,
-            "table": "cloudops-usage",
+            "table": os.environ["TABLE_NAME"],
             "date": today,
         }
 
