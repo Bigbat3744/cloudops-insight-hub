@@ -1,0 +1,5 @@
+bucket       = "cloudops-tfstate-REPLACE_WITH_ACCOUNT_ID"
+key          = "cloudops-insight-hub/aws/terraform.tfstate"
+region       = "eu-west-2"
+encrypt      = true
+use_lockfile = true

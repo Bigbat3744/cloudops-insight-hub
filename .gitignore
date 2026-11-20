@@ -12,7 +12,8 @@ override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
-.terraform.lock.hcl
+terraform/aws/build/
+backend.hcl
 
 # Python
 __pycache__/
@@ -70,3 +71,4 @@ logs/
 # Test outputs
 response.json
 test-event.json
+terraform/aws/backend.hcl
