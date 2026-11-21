@@ -29,23 +29,6 @@ def lambda_handler(event, context) -> Dict[str, Any]:
     logger.info("Lambda function invoked")
 
     try:
-        query_params = event.get("queryStringParameters") or {}
-
-        # Check if this is a historical query
-        query_date = query_params.get("date")
-        if query_date:
-            historical_data = query_historical_data(query_date)
-
-            return create_response(
-                200,
-                {
-                    "message": "Historical data retrieved",
-                    "timestamp": datetime.utcnow().isoformat(),
-                    "version": "0.3.0",
-                    "data": historical_data,
-                },
-            )
-
         # Parse query parameters
         query_params = event.get("queryStringParameters") or {}
         days = int(query_params.get("days", 7))
@@ -220,47 +203,3 @@ def create_response(status_code: int, body: Dict[str, Any]) -> Dict[str, Any]:
         "body": json.dumps(body, indent=2, default=str),  # default=str handles Decimal
     }
 
-
-def query_historical_data(date: str) -> Dict[str, Any]:
-    """
-    Query cost data for a specific date from DynamoDB.
-
-    Args:
-        date: ISO date string (YYYY-MM-DD)
-
-    Returns:
-        Dict containing cost data for that date
-    """
-
-    try:
-        response = table.query(
-            KeyConditionExpression="pk = :pk",
-            ExpressionAttributeValues={":pk": f"COST#{date}"},
-        )
-
-        items = response.get("Items", [])
-
-        if not items:
-            return {
-                "date": date,
-                "status": "no_data",
-                "message": f"No cost data found for {date}",
-            }
-
-        # Extract summary and services
-        summary = next((item for item in items if item["sk"] == "SUMMARY"), None)
-        services = [item for item in items if item["sk"].startswith("SERVICE#")]
-
-        return {
-            "date": date,
-            "total_cost": float(summary.get("total_cost", 0)) if summary else 0,
-            "service_count": len(services),
-            "by_service": {
-                item["service_name"]: float(item["cost"]) for item in services
-            },
-            "timestamp": summary.get("timestamp") if summary else None,
-        }
-
-    except Exception as e:
-        logger.error(f"Error querying historical data: {str(e)}")
-        raise
