@@ -19,6 +19,10 @@ resource "aws_lambda_function" "collector" {
   filename         = data.archive_file.collector.output_path
   source_code_hash = data.archive_file.collector.output_base64sha256
 
+  tracing_config {
+    mode = "Active"
+  }
+
   environment {
     variables = {
       TABLE_NAME = aws_dynamodb_table.usage_table.name
@@ -51,6 +55,10 @@ resource "aws_lambda_function" "reader" {
   memory_size      = 128
   filename         = data.archive_file.reader.output_path
   source_code_hash = data.archive_file.reader.output_base64sha256
+
+  tracing_config {
+    mode = "Active"
+  }
 
   environment {
     variables = {

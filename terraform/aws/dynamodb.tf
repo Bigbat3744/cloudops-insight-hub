@@ -20,6 +20,6 @@ resource "aws_dynamodb_table" "usage_table" {
   }
 
   point_in_time_recovery {
-    enabled = false
+    enabled = true
   }
 }
