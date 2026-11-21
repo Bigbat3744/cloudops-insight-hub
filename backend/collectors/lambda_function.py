@@ -62,11 +62,9 @@ def lambda_handler(event, context) -> Dict[str, Any]:
 
         return create_response(200, response_body)
 
-    except Exception as e:
-        logger.error(f"Error processing request: {str(e)}", exc_info=True)
-        return create_response(
-            500, {"error": "Internal server error", "message": str(e)}
-        )
+    except Exception:
+        logger.exception("Cost collection failed")
+        raise
 
 
 def get_cost_data(days: int) -> Dict[str, Any]:
@@ -187,7 +185,7 @@ def store_cost_data(cost_data: Dict[str, Any]) -> Dict[str, Any]:
 
     except Exception as e:
         logger.error(f"Error storing cost data: {str(e)}", exc_info=True)
-        return {"status": "error", "message": str(e)}
+        raise
 
 
 def create_response(status_code: int, body: Dict[str, Any]) -> Dict[str, Any]:
