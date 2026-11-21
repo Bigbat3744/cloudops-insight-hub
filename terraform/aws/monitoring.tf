@@ -1,6 +1,7 @@
 # ---------- Notifications ----------
 
 resource "aws_sns_topic" "alerts" {
+  #checkov:skip=CKV_AWS_26:CloudWatch alarms cannot publish to a topic encrypted with the AWS-managed SNS key; alert messages contain no sensitive data. A customer-managed KMS key is the upgrade path.
   name = "${var.project_name}-alerts"
 }
 

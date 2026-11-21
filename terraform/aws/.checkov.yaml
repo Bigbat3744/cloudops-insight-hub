@@ -15,3 +15,16 @@ skip-check:
   # Reserved concurrency cannot be set: the account limit is 10 and AWS requires
   # 10 to stay unreserved. Revisit after a Service Quotas increase.
   - CKV_AWS_115
+  # No dead-letter queue: the collector's scheduled input is constant, failures raise
+  # the collector-errors alarm and can be re-run manually; the reader is invoked
+  # synchronously by API Gateway, so a DLQ does not apply.
+  - CKV_AWS_116
+  # Not in a VPC: both functions call only public AWS APIs and reach no private
+  # resources; a VPC would need a NAT gateway or endpoints with no security benefit.
+  - CKV_AWS_117
+  # No code signing: single-author repo; code reaches AWS only via Terraform from
+  # reviewed main. Revisit if more contributors or deploy paths are added.
+  - CKV_AWS_272
+  # Environment variables hold only a table name (not a secret) and are encrypted at
+  # rest by Lambda's default AWS-managed key.
+  - CKV_AWS_173
