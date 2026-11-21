@@ -29,7 +29,7 @@ def lambda_handler(event, context) -> Dict[str, Any]:
     logger.info("Lambda function invoked")
 
     try:
-               # Parse query parameters
+        # Parse query parameters
         query_params = event.get("queryStringParameters") or {}
         days = int(query_params.get("days", 7))
         should_store = query_params.get("store", "true").lower() != "false"
@@ -202,6 +202,4 @@ def create_response(status_code: int, body: Dict[str, Any]) -> Dict[str, Any]:
         },
         "body": json.dumps(body, indent=2, default=str),  # default=str handles Decimal
     }
-
-
 
