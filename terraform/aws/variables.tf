@@ -55,4 +55,5 @@ variable "api_throttle_burst" {
 variable "alert_email" {
   description = "Email address that receives CloudWatch alarm notifications"
   type        = string
+  sensitive   = true
 }
