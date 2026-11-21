@@ -25,6 +25,19 @@ resource "aws_apigatewayv2_stage" "default" {
     throttling_rate_limit  = var.api_throttle_rate
     throttling_burst_limit = var.api_throttle_burst
   }
+
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.api_access.arn
+    format = jsonencode({
+      requestId        = "$context.requestId"
+      ip               = "$context.identity.sourceIp"
+      requestTime      = "$context.requestTime"
+      routeKey         = "$context.routeKey"
+      status           = "$context.status"
+      latencyMs        = "$context.responseLatency"
+      integrationError = "$context.integrationErrorMessage"
+    })
+  }
 }
 
 resource "aws_lambda_permission" "apigw" {
@@ -33,4 +46,9 @@ resource "aws_lambda_permission" "apigw" {
   function_name = aws_lambda_function.reader.function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.api.execution_arn}/*/*"
+}
+
+resource "aws_cloudwatch_log_group" "api_access" {
+  name              = "/aws/apigateway/${aws_apigatewayv2_api.api.name}"
+  retention_in_days = var.log_retention_days
 }

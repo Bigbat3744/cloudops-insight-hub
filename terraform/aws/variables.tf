@@ -51,3 +51,8 @@ variable "api_throttle_burst" {
   type        = number
   default     = 5
 }
+
+variable "alert_email" {
+  description = "Email address that receives CloudWatch alarm notifications"
+  type        = string
+}

@@ -1,0 +1,1 @@
+{"errorMessage": "invalid literal for int() with base 10: 'abc'", "errorType": "ValueError", "requestId": "692cb1f8-8754-4da9-8ba3-feb41daa5142", "stackTrace": ["  File \"/var/task/lambda_function.py\", line 34, in lambda_handler\n    days = int(query_params.get(\"days\", 7))\n"]}
