@@ -22,15 +22,15 @@ data "aws_iam_policy_document" "lambda_permissions" {
   }
 
   statement {
-    sid       = "WriteUsageTable"
-    actions   = ["dynamodb:PutItem"]
-    resources = [aws_dynamodb_table.usage_table.arn]
+    sid       = "WriteTraces"
+    actions   = ["xray:PutTraceSegments", "xray:PutTelemetryRecords"]
+    resources = ["*"]
   }
 
   statement {
-    sid       = "WriteOwnLogs"
-    actions   = ["logs:CreateLogStream", "logs:PutLogEvents"]
-    resources = ["${aws_cloudwatch_log_group.collector.arn}:*"]
+    sid       = "WriteUsageTable"
+    actions   = ["dynamodb:PutItem"]
+    resources = [aws_dynamodb_table.usage_table.arn]
   }
 }
 
@@ -53,14 +53,21 @@ data "aws_iam_policy_document" "reader_permissions" {
   }
 
   statement {
+    sid       = "WriteTraces"
+    actions   = ["xray:PutTraceSegments", "xray:PutTelemetryRecords"]
+    resources = ["*"]
+  }
+
+  statement {
     sid       = "WriteOwnLogs"
     actions   = ["logs:CreateLogStream", "logs:PutLogEvents"]
     resources = ["${aws_cloudwatch_log_group.reader.arn}:*"]
   }
 }
 
+  
 resource "aws_iam_role_policy" "reader_permissions" {
   name   = "${var.reader_function_name}-read-only"
   role   = aws_iam_role.reader_role.id
-  policy = data.aws_iam_policy_document.reader_permissions.json
+  policy = data.aws_iam_policy_document.reader_permissions.json 
 }

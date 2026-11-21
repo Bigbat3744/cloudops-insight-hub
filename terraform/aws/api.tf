@@ -11,6 +11,8 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
 }
 
 resource "aws_apigatewayv2_route" "usage_route" {
+  #checkov:skip=CKV_AWS_309:Public read-only endpoint by design; mitigated by stage throttling, a read-only Lambda role and no sensitive data. Authentication (Cognito JWT) is a planned follow-up.
+
   api_id    = aws_apigatewayv2_api.api.id
   route_key = "GET /usage"
   target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"

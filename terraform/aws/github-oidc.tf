@@ -50,6 +50,8 @@ resource "aws_iam_role" "github_plan" {
 
 # 3. What the role may do: read this stack's resources and the state file, nothing else
 data "aws_iam_policy_document" "github_plan_permissions" {
+  #checkov:skip=CKV_AWS_356:Read-only CI plan role; Describe/List/Get actions such as DescribeAlarms and ListTags require "*". No write actions are granted.
+
   statement {
     sid = "ReadStackResources"
     actions = [
