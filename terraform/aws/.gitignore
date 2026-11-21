@@ -3,3 +3,4 @@ tfplan
 *.tfplan
 out.json
 output.json
+fail.json
