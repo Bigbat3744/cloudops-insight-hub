@@ -17,3 +17,7 @@ output "schedule_rule_name" {
 output "log_group_name" {
   value = aws_cloudwatch_log_group.collector.name
 }
+
+output "reader_function_name" {
+  value = aws_lambda_function.reader.function_name
+}

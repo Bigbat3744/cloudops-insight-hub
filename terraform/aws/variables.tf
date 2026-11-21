@@ -34,3 +34,20 @@ variable "log_retention_days" {
   type    = number
   default = 14
 }
+
+variable "reader_function_name" {
+  type    = string
+  default = "cloudops-api-reader"
+}
+
+variable "api_throttle_rate" {
+  description = "Steady-state requests per second allowed on the API"
+  type        = number
+  default     = 2
+}
+
+variable "api_throttle_burst" {
+  description = "Short burst of requests allowed above the rate"
+  type        = number
+  default     = 5
+}
