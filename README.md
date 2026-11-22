@@ -141,7 +141,7 @@ Every alarm emails on both ALARM and OK through SNS. There is also a CloudWatch 
 <!-- Screenshots: add the files to docs/images/ and they will render here -->
 ![CloudWatch dashboard](docs/images/cloudwatch-dashboard.png)
 ![Alarm email](docs/images/alarm-email.png)
-![X-Ray trace map](docs/images/xray-trace-map.png)
+![X-Ray trace](docs/images/xray-trace-map.png)
 
 ---
 
